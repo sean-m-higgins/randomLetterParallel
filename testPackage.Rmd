@@ -1,0 +1,16 @@
+---
+title: "testPackage"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r cars}
+run
+randomLetterParallel::run()
+library(remotes)
+install_github("sean-m-higgins/randomLetterParallel")
+randomLetterParallel::run()
+```

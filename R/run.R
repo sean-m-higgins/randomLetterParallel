@@ -13,26 +13,37 @@
 #   Check Package:             'Cmd + Shift + E'
 #   Test Package:              'Cmd + Shift + T'
 
-run <- function() {
+run <- function(n = 100000) {
   library(parallel)
   detectCores()
-  ## [1] 4
   # Calculate the number of cores
-  no_cores <- detectCores() - 1
+  no_cores = detectCores() - 1
   # Initiate cluster
-  cl <- makeCluster(no_cores)
+  cl = makeCluster(no_cores)
   
-  print("non-parallel: 10000000")
-  start <- Sys.time()
-  lapply(1:10000000, function(x){x^2})
-  end <- Sys.time()
-  print(end-start)
+  ftn = function(x) {
+    alphabet = c("a", "b", "c", "d", "e", "f", "g", "h", "i", 
+                 "j", "k", "l", "m", "n", "o", "p", "q", "r", 
+                 "s", "t", "u", "v", "w", "x", "y", "z")
+    alphabet[sample(1:26, 1,replace=F)[1]]
+  }
   
-  print("parallel: 10000000")
-  start <- Sys.time()
-  parLapply(cl, 1:10000000, function(x){x^2})
-  end <- Sys.time()
-  print(end-start)
-  ## Time difference of 0.05823398 secs
+  start = Sys.time()
+  lapply(1:n, ftn)
+  end = Sys.time()
+  time1 = end-start
+
+  start = Sys.time()
+  parLapply(cl, 1:n, ftn)
+  end = Sys.time()
+  time2 = end-start
+  
+  print("n: ")
+  print(n)
+  print("non-parallel:")
+  print(time1)
+  print("parallel:")
+  print(time2)
+
   stopCluster(cl)
 }
